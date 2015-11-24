@@ -1,14 +1,17 @@
 class Game
   def initialize
     @board = ["0", "1", "2", "3", "4", "5", "6", "7", "8"]
-    @com = "X"
-    @hum = "O"
+    @com = nil
+    @hum = nil
   end
 
   def start_game
     puts "Welcome to my Tic Tac Toe game"
     puts "|_#{@board[0]}_|_#{@board[1]}_|_#{@board[2]}_|\n|_#{@board[3]}_|_#{@board[4]}_|_#{@board[5]}_|\n|_#{@board[6]}_|_#{@board[7]}_|_#{@board[8]}_|\n"
-    puts "Please select your spot."
+    if @hum == nil 
+      get_symbol 
+    end
+    puts "You selected #{@hum}!\nPlease select your spot by typing one of these positions: #{get_available_spaces.join(",")} then press enter"
     until game_is_over(@board) || tie(@board)
       get_human_spot
       if !game_is_over(@board) && !tie(@board)
@@ -41,6 +44,25 @@ class Game
       end
     end
     available_spaces
+  end
+
+  def get_symbol
+      print "What would you like to be: X's or O's. Please enter\n"
+      while true
+      @hum = $stdin.gets.chomp
+      if @hum == "x" || @hum == "X"
+        @com = "O"
+        @hum = "X"
+        break
+      elsif @hum == "o" || @hum == "O" || @hum == "0"
+        @com = "X"
+        @hum = "O"
+        break
+      else
+        puts "That is not a valid entry. Type X or O and press enter"
+        next
+      end
+    end
   end
 
   def eval_board
@@ -110,6 +132,7 @@ class Game
   end
 
 end
+
 
 # game = Game.new
 # game.start_game
