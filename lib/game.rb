@@ -21,14 +21,26 @@ class Game
 
   def get_human_spot
     spot = nil
-    until spot
-      spot = gets.chomp.to_i
-      if @board[spot] != "X" && @board[spot] != "O"
-        @board[spot] = @hum
+    while true
+      spot = $stdin.gets.chomp               #point gets to $stdin explicitly.
+      if get_available_spaces.include? spot  #check if user input is available.
+        @board[spot.to_i] = @hum
+        break
       else
-        spot = nil
+        puts "#{spot} is not available. Please enter one of these positions available: #{get_available_spaces.join(",")}" 
+        next
       end
     end
+  end
+
+  def get_available_spaces
+    available_spaces = []
+    @board.each do |number_string|
+      if number_string != "X" && number_string != "O" 
+        available_spaces << number_string
+      end
+    end
+    available_spaces
   end
 
   def eval_board
@@ -99,5 +111,5 @@ class Game
 
 end
 
-game = Game.new
-game.start_game
+# game = Game.new
+# game.start_game
